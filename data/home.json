@@ -1,5 +1,11 @@
 {
-  "featured_ids": ["1001"],
-  "top_hot_ids": ["1001"],
-  "banner_text": "你需要关心的只有今天吃什么。"
+  "featured_ids": [
+    "1001",
+    "1002"
+  ],
+  "top_hot_ids": [
+    "1001",
+    "1002"
+  ],
+  "banner_text": "把麻烦交给 AI，把时间留给发呆"
 }

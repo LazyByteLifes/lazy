@@ -20,8 +20,6 @@
             --bottom-nav-fire-color: #ED8936;
             --bottom-nav-item-size: 48px;
             --bottom-nav-item-radius: 16px;
-            --code-bg: #1E293B;
-            --code-text: #E2E8F0;
             --shadow-soft: 0 15px 30px -5px rgba(91, 149, 245, 0.1);
             --shadow-float: 0 -10px 30px rgba(0,0,0,0.05);
         }
@@ -88,11 +86,18 @@
             font-style: italic;
         }
 
-        /* 代码块优化 */
-        .code-block { background: var(--code-bg); border-radius: 16px; padding: 16px; margin: 24px 0; position: relative; overflow: hidden; }
-        .code-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px; }
-        pre { font-family: 'JetBrains Mono', monospace; color: var(--code-text); font-size: 13px; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; }
+        pre {
+            font-family: 'JetBrains Mono', monospace;
+            background: #F7FAFC;
+            color: #2D3748;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            padding: 16px;
+            border-radius: 12px;
+            margin: 24px 0;
+        }
 
         .sticky-footer {
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
@@ -178,21 +183,6 @@
 
     <script type="module">
         import { fetchArticleDetail } from "./js/data-loader.js";
-
-        // 配置 Marked 渲染器，使其生成你之前的 .code-block 结构
-        const renderer = new marked.Renderer();
-        renderer.code = (code, language) => {
-            const lang = language || 'CODE';
-            return `
-                <div class="code-block">
-                    <div class="code-header">
-                        <span class="code-lang">${lang}</span>
-                    </div>
-                    <pre><code>${code}</code></pre>
-                </div>
-            `;
-        };
-        marked.setOptions({ renderer });
 
         async function initArticle() {
             const params = new URLSearchParams(window.location.search);
