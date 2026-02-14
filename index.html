@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteLife.ai - 懒人极客生活</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #F8FAFC;
+            --text-main: #0F172A;
+            --text-sub: #64748B;
+            --accent-blue: #3B82F6;
+            --card-white: rgba(255, 255, 255, 0.8);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #020617;
+                --text-main: #F1F5F9;
+                --text-sub: #94A3B8;
+                --card-white: rgba(30, 41, 59, 0.7);
+            }
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* --- 动态背景光斑 --- */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out alternate;
+        }
+        .orb-1 { width: 400px; height: 400px; background: #60A5FA; top: -100px; left: -100px; }
+        .orb-2 { width: 500px; height: 500px; background: #A78BFA; bottom: -150px; right: -100px; animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 30px) scale(1.1); }
+        }
+
+        /* --- 核心布局容器 --- */
+        .container {
+            max-width: 1200px;
+            width: 90%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            z-index: 1;
+        }
+
+        /* --- 左侧文案 --- */
+        .content-area { z-index: 2; }
+
+        .logo { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+        .logo-icon { width: 40px; height: 40px; background: var(--text-main); color: var(--bg-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+        .logo-text { font-size: 20px; font-weight: 800; }
+
+        h1 { font-size: 64px; line-height: 1.1; margin-bottom: 24px; letter-spacing: -2px; }
+        .highlight { background: linear-gradient(120deg, #3B82F6, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        p.subtitle { font-size: 18px; color: var(--text-sub); line-height: 1.6; margin-bottom: 40px; max-width: 460px; }
+
+        .cta-group { display: flex; gap: 16px; align-items: center; }
+        .btn { padding: 14px 28px; border-radius: 50px; font-weight: 700; text-decoration: none; transition: transform 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary { background: var(--text-main); color: var(--bg-color); }
+        .btn-secondary { background: rgba(255,255,255,0.1); border: 1px solid var(--text-sub); color: var(--text-main); backdrop-filter: blur(10px); }
+        .btn:hover { transform: scale(1.05); }
+
+        /* --- 右侧：悬浮卡片墙 --- */
+        .visual-area { position: relative; height: 600px; perspective: 1000px; display: flex; align-items: center; justify-content: center; }
+        .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; transform: rotateX(10deg) rotateY(-15deg) rotateZ(5deg); transform-style: preserve-3d; }
+
+        .deco-card {
+            background: var(--card-white); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            padding: 20px; border-radius: 24px; width: 240px; box-shadow: 0 20px 40px -5px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.2); transition: transform 0.3s ease;
+            display: flex; align-items: center; gap: 16px; animation: floatCard 6s ease-in-out infinite;
+        }
+        .card-1 { animation-delay: 0s; }
+        .card-2 { transform: translateY(30px); animation-delay: -2s; }
+        .card-3 { transform: translateY(-20px); animation-delay: -4s; }
+        .card-4 { animation-delay: -1s; }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0) translateZ(0); }
+            50% { transform: translateY(-15px) translateZ(20px); }
+        }
+
+        .dc-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+        .dc-content h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .dc-content p { font-size: 11px; color: var(--text-sub); }
+
+        .qr-card { position: absolute; bottom: -20px; right: 40px; background: white; padding: 16px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); text-align: center; transform: rotateZ(-5deg); z-index: 10; }
+        .qr-placeholder { width: 100px; height: 100px; background: #0F172A; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; margin-bottom: 8px; }
+        .qr-text { font-size: 10px; font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 1px;}
+
+        /* --- [NEW] 固定元素 (Fixed Elements) --- */
+        .fixed-corner {
+            position: fixed;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 14px;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        /* 右上角：社交链接 */
+        .top-right { top: 40px; right: 40px; }
+        .social-link {
+            color: var(--text-main);
+            font-size: 24px;
+            opacity: 0.6;
+            transition: opacity 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+        .social-link:hover { opacity: 1; transform: scale(1.1); }
+
+        /* 左下角：系统状态 */
+        .bottom-left { bottom: 40px; left: 40px; }
+        .status-dot {
+            width: 8px; height: 8px; background: #22C55E; border-radius: 50%;
+            box-shadow: 0 0 10px #22C55E; margin-right: 8px;
+        }
+
+        /* 右下角：版权信息 */
+        .bottom-right { bottom: 40px; right: 40px; text-align: right; flex-direction: column; align-items: flex-end; gap: 4px; }
+        .copyright { font-size: 12px; opacity: 0.8; }
+        .beian { font-size: 10px; opacity: 0.5; text-decoration: none; color: var(--text-sub); }
+
+    </style>
+</head>
+<body>
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="fixed-corner top-right">
+        <a href="#" class="social-link" title="GitHub"><i class="ph-bold ph-github-logo"></i></a>
+        <a href="#" class="social-link" title="Twitter"><i class="ph-bold ph-x-logo"></i></a>
+    </div>
+
+    <div class="fixed-corner bottom-left">
+        <div style="display:flex; align-items:center;">
+            <div class="status-dot"></div>
+            <span>v1.0.0 (Lazy Edition)</span>
+        </div>
+    </div>
+
+    <div class="fixed-corner bottom-right">
+        <div class="copyright">&copy; 2024 ByteLife.ai</div>
+        <a href="#" class="beian">Built with coffee & naps.</a>
+    </div>
+
+
+    <div class="container">
+        <div class="content-area">
+            <div class="logo">
+                <div class="logo-icon"><i class="ph-fill ph-coffee"></i></div>
+                <div class="logo-text">bytelife</div>
+            </div>
+            
+            <h1>
+                Don't Code Hard.<br>
+                <span class="highlight">Code Lazy.</span>
+            </h1>
+            
+            <p class="subtitle">
+                这里没有 KPI，只有让你一键偷懒的数字魔法。<br>
+                专为想要“摸鱼”的程序员打造的工具箱。
+            </p>
+
+            <div class="cta-group">
+                <a href="#" class="btn btn-primary">
+                    <i class="ph-bold ph-github-logo"></i> View on GitHub
+                </a>
+                <a href="mailto:hi@bytelife.ai" class="btn btn-secondary">
+                    Contact Author
+                </a>
+            </div>
+        </div>
+
+        <div class="visual-area">
+            <div class="card-grid">
+                
+                <div class="deco-card card-1">
+                    <div class="dc-icon" style="background:#E0F2FE; color:#0EA5E9;">
+                        <i class="ph-duotone ph-terminal-window"></i>
+                    </div>
+                    <div class="dc-content">
+                        <h3>自动周报脚本</h3>
+                        <p>Python · 2 mins saved</p>
+                    </div>
+                </div>
+
+                <div class="deco-card card-2">
+                    <div class="dc-icon" style="background:#F3E8FF; color:#9333EA;">
+                        <i class="ph-duotone ph-robot"></i>
+                    </div>
+                    <div class="dc-content">
+                        <h3>甲方邮件替身</h3>
+                        <p>ChatGPT Prompt</p>
+                    </div>
+                </div>
+
+                <div class="deco-card card-3">
+                    <div class="dc-icon" style="background:#ECFDF5; color:#10B981;">
+                        <i class="ph-duotone ph-coffee-bean"></i>
+                    </div>
+                    <div class="dc-content">
+                        <h3>树莓派咖啡机</h3>
+                        <p>IoT · 8 mins brew</p>
+                    </div>
+                </div>
+
+                <div class="deco-card card-4">
+                    <div class="dc-icon" style="background:#FFF7ED; color:#EA580C;">
+                        <i class="ph-duotone ph-moon-stars"></i>
+                    </div>
+                    <div class="dc-content">
+                        <h3>午睡驱动开发</h3>
+                        <p>LifeStyle</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="qr-card">
+                <div class="qr-placeholder">
+                    <i class="ph-fill ph-qr-code" style="font-size: 48px;"></i>
+                </div>
+                <div class="qr-text">Scan to Chill</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

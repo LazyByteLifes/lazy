@@ -1,0 +1,10 @@
+{
+  "site_name": "ByteLife",
+  "categories": [
+    { "id": "all", "name": "全部", "icon": "ph-grid-four" },
+    { "id": "efficiency", "name": "效率工具", "icon": "ph-lightning" },
+    { "id": "automation", "name": "自动化", "icon": "ph-robot" },
+    { "id": "lazy", "name": "摸鱼技巧", "icon": "ph-coffee" },
+    { "id": "ai", "name": "AI副业", "icon": "ph-sparkle" }
+  ]
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1001",
+    "title": "午睡驱动开发指南",
+    "desc": "为什么最优雅的代码，往往是在沙发上躺了20分钟后写出来的？",
+    "category": "lazy",
+    "tags": ["摸鱼", "心理学"],
+    "date": "2024-05-20",
+    "views": 2400,
+    "likes": 120,
+    "icon": "ph-moon-stars",
+    "bg": "#EBF2FF",
+    "color": "#5B95F5"
+  },
+  {
+    "id": "1002",
+    "title": "把焦虑外包给AI",
+    "desc": "训练一个AI替身，专门回复甲方的胡言乱语。",
+    "category": "automation",
+    "tags": ["ChatGPT", "办公"],
+    "date": "2024-05-21",
+    "views": 1800,
+    "likes": 95,
+    "icon": "ph-robot",
+    "bg": "#F3E5F5",
+    "color": "#9F7AEA"
+  }
+]
