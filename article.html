@@ -6,6 +6,8 @@
     <title>ByteLife - 文章详情</title>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bottom-nav.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
     <style>
         :root {
@@ -15,7 +17,10 @@
             --text-sub: #718096;
             --accent-blue: #5B95F5;
             --accent-purple: #9F7AEA;
-            --code-bg: #1E293B; /* 深色代码背景 */
+            --bottom-nav-fire-color: #ED8936;
+            --bottom-nav-item-size: 48px;
+            --bottom-nav-item-radius: 16px;
+            --code-bg: #1E293B;
             --code-text: #E2E8F0;
             --shadow-soft: 0 15px 30px -5px rgba(91, 149, 245, 0.1);
             --shadow-float: 0 -10px 30px rgba(0,0,0,0.05);
@@ -38,12 +43,11 @@
             max-width: 414px;
             min-height: 100vh;
             position: relative;
-            padding: 0 0 100px 0; /* 底部留白给悬浮按钮 */
+            padding: 0 0 100px 0;
             box-shadow: 0 0 50px rgba(0,0,0,0.1);
             overflow-y: auto;
         }
 
-        /* --- 顶部导航 --- */
         header {
             display: flex;
             justify-content: space-between;
@@ -57,326 +61,160 @@
         }
 
         .icon-btn {
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: var(--text-main);
+            width: 40px; height: 40px; background: white; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: var(--text-main); border: none; cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            border: none;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        
-        .icon-btn:active { transform: scale(0.95); }
-
-        /* --- 文章主体 --- */
-        .article-body {
-            padding: 0 24px 40px 24px;
         }
 
-        .article-meta {
+        .article-body { padding: 0 24px 40px 24px; }
+        .tags { display: flex; gap: 8px; margin-bottom: 12px; }
+        .tag { background: #EBF2FF; color: var(--accent-blue); padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 700; }
+        .article-title { font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 12px; letter-spacing: -0.5px; }
+        .publish-info { font-size: 13px; color: var(--text-sub); display: flex; align-items: center; gap: 6px; }
+
+        /* --- Markdown 元素样式 --- */
+        .content { font-size: 16px; line-height: 1.8; color: #2D3748; }
+        .content p { margin-bottom: 20px; }
+        .content h2 { font-size: 20px; font-weight: 700; margin-top: 32px; margin-bottom: 16px; }
+        .content ul, .content ol { margin-bottom: 20px; padding-left: 20px; }
+        .content li { margin-bottom: 8px; }
+        .content blockquote {
+            border-left: 4px solid var(--accent-blue);
+            padding: 10px 20px;
+            background: rgba(91, 149, 245, 0.05);
             margin-bottom: 20px;
-        }
-
-        .tags {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .tag {
-            background: #EBF2FF;
-            color: var(--accent-blue);
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .article-title {
-            font-size: 26px; /* 稍微调小一点点以适应更多标题 */
-            font-weight: 800;
-            line-height: 1.3;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        .publish-info {
-            font-size: 13px;
             color: var(--text-sub);
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            font-style: italic;
         }
 
-        /* --- TL;DR 卡片 --- */
-        .tldr-card {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            margin: 24px 0;
-            border-left: 5px solid var(--accent-purple);
-            box-shadow: var(--shadow-soft);
-        }
+        /* 代码块优化 */
+        .code-block { background: var(--code-bg); border-radius: 16px; padding: 16px; margin: 24px 0; position: relative; overflow: hidden; }
+        .code-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .code-lang { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #94A3B8; text-transform: uppercase; letter-spacing: 1px; }
+        pre { font-family: 'JetBrains Mono', monospace; color: var(--code-text); font-size: 13px; line-height: 1.6; overflow-x: auto; white-space: pre-wrap; }
 
-        .tldr-title {
-            font-weight: 800;
-            font-size: 14px;
-            color: var(--accent-purple);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-transform: uppercase;
-        }
-
-        .tldr-list {
-            list-style: none;
-        }
-
-        .tldr-list li {
-            font-size: 14px;
-            line-height: 1.6;
-            margin-bottom: 8px;
-            padding-left: 16px;
-            position: relative;
-        }
-
-        .tldr-list li::before {
-            content: "•";
-            color: var(--accent-purple);
-            font-weight: bold;
-            position: absolute;
-            left: 0;
-        }
-
-        /* --- 正文样式 --- */
-        .content p {
-            font-size: 16px;
-            line-height: 1.8;
-            color: #2D3748;
-            margin-bottom: 20px;
-        }
-
-        .content h2 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-top: 32px;
-            margin-bottom: 16px;
-        }
-
-        /* --- 代码块样式 (已移除复制按钮) --- */
-        .code-block {
-            background: var(--code-bg);
-            border-radius: 16px;
-            padding: 16px;
-            margin: 20px 0;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .code-lang {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px;
-            color: #94A3B8;
-            text-transform: uppercase;
-        }
-
-        pre {
-            font-family: 'JetBrains Mono', monospace;
-            color: var(--code-text);
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-            white-space: pre-wrap;
-        }
-
-        /* --- 底部悬浮操作栏 --- */
         .sticky-footer {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 414px;
-            background: white;
-            padding: 16px 24px 30px 24px;
-            box-shadow: var(--shadow-float);
-            display: flex;
-            gap: 12px;
-            z-index: 30;
-            border-radius: 24px 24px 0 0;
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 414px; background: white; padding: 16px 24px 30px 24px;
+            box-shadow: var(--shadow-float); display: flex; gap: 12px; z-index: 30; border-radius: 24px 24px 0 0;
         }
 
-        .action-btn {
-            height: 50px;
-            border-radius: 16px;
-            border: none;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: transform 0.2s;
-        }
+        .action-btn { height: 50px; border-radius: 16px; border: none; font-weight: 700; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-primary { flex: 1; background: var(--accent-blue); color: white; box-shadow: 0 8px 20px -4px rgba(91, 149, 245, 0.5); text-decoration: none; }
+        .btn-secondary { background: #F7FAFC; color: var(--text-sub); width: 50px; flex: none; }
 
-        /* 主按钮 */
-        .btn-primary {
-            flex: 1;
-            background: var(--accent-blue);
-            color: white;
-            box-shadow: 0 8px 20px -4px rgba(91, 149, 245, 0.5);
-            text-decoration: none; /* 如果是链接 */
-        }
-
-        /* 次按钮 (收藏) */
-        .btn-secondary {
-            background: #F7FAFC;
-            color: var(--text-sub);
-            width: 50px;
-            flex: none;
-        }
-        
-        .btn-primary:active { transform: scale(0.98); }
-
-        /* 隐藏滚动条 */
         ::-webkit-scrollbar { display: none; }
-
     </style>
 </head>
 <body>
 
     <div class="mobile-container">
-        
         <header>
-            <button class="icon-btn" onclick="window.history.back()">
-                <i class="ph-bold ph-caret-left"></i>
-            </button>
-            <button class="icon-btn">
-                <i class="ph-bold ph-share-network"></i>
-            </button>
+            <button class="icon-btn" onclick="window.history.back()"><i class="ph-bold ph-caret-left"></i></button>
+            <button class="icon-btn"><i class="ph-bold ph-share-network"></i></button>
         </header>
 
         <div class="article-body">
-            
             <div class="article-meta">
                 <div class="tags" id="articleTags"></div>
                 <h1 class="article-title" id="articleTitle">Loading...</h1>
                 <div class="publish-info" id="publishInfo"></div>
             </div>
-
-            <div class="tldr-card" id="tldrCard" style="display:none;">
-                <div class="tldr-title">
-                    <i class="ph-bold ph-lightning"></i> TL;DR 太长不看
-                </div>
-                <ul class="tldr-list" id="tldrList"></ul>
-            </div>
-
             <div class="content" id="articleContent"></div>
-
         </div>
 
-        <div class="sticky-footer">
-            <button class="action-btn btn-secondary">
-                <i class="ph-fill ph-heart" style="color: #CBD5E0;"></i>
-            </button>
-            
-            <a href="#" class="action-btn btn-primary">
-                <i class="ph-bold ph-arrow-square-out"></i>
-                直达官网
-            </a>
+        <nav class="bottom-nav">
+            <div class="nav-item" onclick="location.href='index.html'"><i class="ph-bold ph-house"></i></div>
+            <div class="nav-item" id="fireBtn"><i class="ph-bold ph-fire"></i></div>
+            <div class="nav-item" id="diceBtn"><i class="ph-bold ph-dice-five"></i></div>
+            <div class="nav-item" id="searchBtn"><i class="ph-bold ph-magnifying-glass"></i></div>
+        </nav>
+
+        <div class="modal-overlay" id="luckyModal">
+            <div class="modal-card">
+                <button class="close-modal" onclick="closeModal('luckyModal')">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+                <div class="lucky-header">
+                    <i class="ph-fill ph-sparkle"></i> AI PICKED FOR YOU
+                </div>
+                <div class="lucky-img-box" id="modalImgBox">
+                    <i class="ph-duotone ph-question" id="modalIcon"></i>
+                </div>
+                <h3 class="card-title" id="modalTitle">Loading...</h3>
+                <p class="card-desc" id="modalDesc">Loading content...</p>
+                <button class="lucky-btn" onclick="location.href='article.html'">
+                    马上看看
+                </button>
+            </div>
         </div>
 
+        <div class="modal-overlay" id="searchModal">
+            <div class="modal-card">
+                <button class="close-modal" onclick="closeModal('searchModal')">
+                    <i class="ph-bold ph-x"></i>
+                </button>
+                <h3 class="card-title" style="margin-bottom: 4px;">搜点什么?</h3>
+                <p style="font-size:12px; color:var(--text-sub); margin-bottom: 20px;">找回你失去的睡眠时间</p>
+
+                <div class="search-input-wrapper">
+                    <i class="ph-bold ph-magnifying-glass"></i>
+                    <input type="text" class="search-input" id="realSearchInput" placeholder="例如：自动周报...">
+                </div>
+
+                <div style="font-size:12px; font-weight:700; color:var(--text-sub); margin-bottom:10px;">偷懒关键词</div>
+                <div class="tags-container">
+                    <div class="search-tag">ChatGPT</div>
+                    <div class="search-tag">Python脚本</div>
+                    <div class="search-tag">摸鱼</div>
+                    <div class="search-tag">Notion</div>
+                    <div class="search-tag">自动化</div>
+                    <div class="search-tag">副业</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="module">
         import { fetchArticleDetail } from "./js/data-loader.js";
 
-        function getArticleId() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get("id");
-        }
-
-        function renderTags(tags) {
-            const container = document.getElementById("articleTags");
-            if (!container) {
-                return;
-            }
-            container.innerHTML = "";
-            (tags || []).forEach((tag) => {
-                const span = document.createElement("span");
-                span.className = "tag";
-                span.textContent = tag;
-                container.appendChild(span);
-            });
-        }
-
-        function renderTldr(items) {
-            const card = document.getElementById("tldrCard");
-            const list = document.getElementById("tldrList");
-            if (!card || !list) {
-                return;
-            }
-            if (!items || items.length === 0) {
-                card.style.display = "none";
-                return;
-            }
-
-            card.style.display = "block";
-            list.innerHTML = "";
-            items.forEach((text) => {
-                const li = document.createElement("li");
-                li.textContent = text;
-                list.appendChild(li);
-            });
-        }
+        // 配置 Marked 渲染器，使其生成你之前的 .code-block 结构
+        const renderer = new marked.Renderer();
+        renderer.code = (code, language) => {
+            const lang = language || 'CODE';
+            return `
+                <div class="code-block">
+                    <div class="code-header">
+                        <span class="code-lang">${lang}</span>
+                    </div>
+                    <pre><code>${code}</code></pre>
+                </div>
+            `;
+        };
+        marked.setOptions({ renderer });
 
         async function initArticle() {
-            const id = getArticleId();
-            if (!id) {
-                return;
-            }
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id");
+            if (!id) return;
 
             try {
                 const detail = await fetchArticleDetail(id);
-                const titleEl = document.getElementById("articleTitle");
-                const contentEl = document.getElementById("articleContent");
-                const publishEl = document.getElementById("publishInfo");
+                
+                document.getElementById("articleTitle").textContent = detail.title;
+                document.getElementById("publishInfo").innerHTML = `
+                    <i class="ph-fill ph-clock"></i> ${detail.date || ""} &bull; by ${detail.author || "ByteLife"}
+                `;
 
-                if (titleEl) {
-                    titleEl.innerHTML = detail.title || "";
-                }
-                if (publishEl) {
-                    const dateText = detail.date ? `${detail.date}` : "";
-                    const authorText = detail.author ? `by ${detail.author}` : "";
-                    publishEl.innerHTML = `<i class=\"ph-fill ph-clock\"></i> ${dateText} ${dateText && authorText ? "&bull;" : ""} ${authorText}`;
-                }
-                renderTags(detail.tags || []);
-                renderTldr(detail.tldr || []);
+                // 渲染标签
+                const tagContainer = document.getElementById("articleTags");
+                tagContainer.innerHTML = (detail.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
 
-                if (contentEl) {
-                    contentEl.innerHTML = detail.content || "";
-                }
-
-                if (detail.title) {
-                    document.title = `ByteLife - ${detail.title}`;
-                }
+                // 解析 Markdown 内容
+                document.getElementById("articleContent").innerHTML = marked.parse(detail.content || "");
+                
+                document.title = `ByteLife - ${detail.title}`;
             } catch (error) {
                 console.error("Failed to load article", error);
             }
@@ -384,5 +222,6 @@
 
         initArticle();
     </script>
+    <script src="js/bottom-nav.js"></script>
 </body>
 </html>

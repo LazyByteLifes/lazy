@@ -24,5 +24,31 @@
     "icon": "ph-robot",
     "bg": "#F3E5F5",
     "color": "#9F7AEA"
-  }
+  },
+  {
+  "id": "1003",
+  "title": "爆火的 OpenClaw：这只“小龙虾”真的长了手！",
+  "desc": "别再当复制粘贴机器人了，让这只全能助手接管你的电脑。",
+  "category": "automation",
+  "tags": ["OpenClaw", "AI Agent", "自动省心"],
+  "date": "2026-02-14",
+  "views": 5200,
+  "likes": 310,
+  "icon": "ph-sparkle",
+  "bg": "rgba(167, 139, 250, 0.15)",
+  "color": "#8B5CF6"
+},
+{
+  "id": "1004",
+  "title": "别再给各种会员“白打工”了：让 AI 开启你的省钱自动挡！",
+  "desc": "别让那些“自动续费”偷走你的咖啡钱。让 AI 帮你守住钱包，一键清理那些你早就忘了的订阅。",
+  "category": "efficiency",
+  "tags": ["省钱大法", "AI管家", "拒绝被宰"],
+  "date": "2026-02-14",
+  "views": 4800,
+  "likes": 310,
+  "icon": "ph-wallet",
+  "bg": "rgba(72, 187, 120, 0.15)",
+  "color": "#48BB78"
+}
 ]

@@ -2,6 +2,6 @@
   "id": "1001",
   "title": "午睡驱动开发指南",
   "author": "LazyCoder",
-  "content": "<h2>第一章：如何正确地躺平</h2><p>首先，你需要一个人体工学沙发。在 ByteLife 的哲学里，午睡不是浪费时间，而是最高效的代码预编译过程。</p><div class='code-block'><div class='code-header'><span class='code-lang'>PYTHON</span></div><pre>while alive:\n    code()\n    nap(20) # Essential</pre></div><p>当你进入深度睡眠前的那一刻，大脑的逻辑回路会自动重构你的 Bug。</p>",
+  "content": "## 第一章：如何正确地躺平\n\n首先，你需要一个人体工学沙发。在 ByteLife 的哲学里，午睡不是浪费时间，而是最高效的代码预编译过程。\n\n```python\nwhile alive:\n    code()\n    nap(20) # Essential\n```\n\n当你进入深度睡眠前的那一刻，大脑的逻辑回路会自动重构你的 Bug。不少开发者反馈，午睡后的第一个 Commit 往往是全天质量最高的。",
   "related_ids": ["1002"]
 }

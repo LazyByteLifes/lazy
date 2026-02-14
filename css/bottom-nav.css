@@ -1,0 +1,246 @@
+:root {
+    --bottom-nav-width: 340px;
+    --bottom-nav-padding: 12px 24px;
+    --bottom-nav-bg: rgba(255, 255, 255, 0.9);
+    --bottom-nav-border: rgba(255, 255, 255, 0.5);
+    --bottom-nav-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    --bottom-nav-blur: 10px;
+    --bottom-nav-icon-size: 26px;
+    --bottom-nav-icon-color: #A0AEC0;
+    --bottom-nav-item-size: auto;
+    --bottom-nav-item-radius: 16px;
+    --bottom-nav-item-transition: none;
+    --bottom-nav-item-active-bg: transparent;
+    --bottom-nav-item-press-scale: 1;
+    --bottom-nav-active-color: var(--accent-blue, #5B95F5);
+    --bottom-nav-active-scale: 1;
+    --bottom-nav-fire-color: var(--accent-orange, #ED8936);
+    --modal-shadow: var(--shadow-modal, 0 25px 50px -12px rgba(0, 0, 0, 0.25));
+    --modal-close-bg: var(--input-bg, #F7FAFC);
+    --modal-input-bg: var(--input-bg, #F7FAFC);
+    --modal-card-bg: var(--card-bg, #FFFFFF);
+    --modal-text-color: var(--text-main, #1A202C);
+    --modal-lucky-btn-bg: var(--text-main, #1A202C);
+    --modal-lucky-btn-color: var(--bg-container, var(--bg-color, #FFFFFF));
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: var(--bottom-nav-width);
+    background: var(--bottom-nav-bg);
+    backdrop-filter: blur(var(--bottom-nav-blur));
+    -webkit-backdrop-filter: blur(var(--bottom-nav-blur));
+    border-radius: 24px;
+    padding: var(--bottom-nav-padding);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--bottom-nav-shadow);
+    z-index: 100;
+    border: 1px solid var(--bottom-nav-border);
+}
+
+.nav-item {
+    font-size: var(--bottom-nav-icon-size);
+    color: var(--bottom-nav-icon-color);
+    cursor: pointer;
+    width: var(--bottom-nav-item-size);
+    height: var(--bottom-nav-item-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--bottom-nav-item-radius);
+    transition: var(--bottom-nav-item-transition);
+}
+
+.nav-item:active {
+    transform: scale(var(--bottom-nav-item-press-scale));
+    background: var(--bottom-nav-item-active-bg);
+}
+
+.nav-item.active {
+    color: var(--bottom-nav-active-color);
+    transform: scale(var(--bottom-nav-active-scale));
+}
+
+.nav-item.fire-active {
+    color: var(--bottom-nav-fire-color);
+    transform: scale(1.1);
+}
+
+@keyframes rollDice {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.nav-item.dice-rolling i {
+    animation: rollDice 0.6s ease-in-out;
+    color: var(--accent-purple, #9F7AEA);
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-card {
+    background: var(--modal-card-bg);
+    width: 85%;
+    max-width: 340px;
+    border-radius: 32px;
+    padding: 24px;
+    box-shadow: var(--modal-shadow);
+    transform: translateY(20px) scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    color: var(--modal-text-color);
+}
+
+.modal-overlay.active .modal-card {
+    transform: translateY(0) scale(1);
+}
+
+.close-modal {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--modal-close-bg);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: var(--text-sub, #718096);
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.modal-card .search-input-wrapper {
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.modal-card .search-input-wrapper i {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-sub, #718096);
+    font-size: 20px;
+}
+
+.modal-card .search-input {
+    width: 100%;
+    padding: 16px 16px 16px 48px;
+    border-radius: 16px;
+    border: 2px solid transparent;
+    background: var(--modal-input-bg);
+    font-size: 16px;
+    color: var(--modal-text-color);
+    outline: none;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.modal-card .search-input:focus {
+    border-color: var(--accent-blue, #5B95F5);
+    background: var(--modal-card-bg);
+    box-shadow: 0 0 0 4px rgba(91, 149, 245, 0.1);
+}
+
+.modal-card .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.modal-card .search-tag {
+    font-size: 12px;
+    padding: 6px 12px;
+    background: var(--modal-input-bg);
+    color: var(--text-sub, #718096);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.modal-card .search-tag:hover {
+    background: var(--accent-blue, #5B95F5);
+    color: #FFFFFF;
+}
+
+.lucky-header {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent-purple, #9F7AEA);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.lucky-img-box {
+    height: 140px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.lucky-btn {
+    background: var(--modal-lucky-btn-bg);
+    color: var(--modal-lucky-btn-color);
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.lucky-btn:active {
+    transform: scale(0.98);
+}
+
+.modal-card .card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.modal-card .card-desc {
+    font-size: 13px;
+    color: var(--text-sub, #718096);
+}

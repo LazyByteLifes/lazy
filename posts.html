@@ -6,6 +6,7 @@
     <title>ByteLife - 知识库</title>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/bottom-nav.css">
     
     <style>
         :root {
@@ -22,6 +23,12 @@
             --shadow-soft: 0 15px 30px -5px rgba(91, 149, 245, 0.1);
             --shadow-nav: 0 10px 30px rgba(0, 0, 0, 0.08);
             --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                --bottom-nav-width: 320px;
+                --bottom-nav-padding: 16px 32px;
+                --bottom-nav-icon-size: 24px;
+                --bottom-nav-active-scale: 1.1;
+                --bottom-nav-item-size: auto;
+                --bottom-nav-item-radius: 0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -203,164 +210,6 @@
         }
 
         /* --- 底部导航 (保持一致) --- */
-        .bottom-nav {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 320px;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(10px);
-            border-radius: 24px;
-            padding: 16px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            z-index: 100;
-            border: 1px solid rgba(255,255,255,0.5);
-        }
-        .nav-item { font-size: 24px; color: #A0AEC0; cursor: pointer; }
-        .nav-item.active { color: var(--accent-blue); transform: scale(1.1); }
-        .nav-item.fire-active { color: var(--accent-orange); transform: scale(1.1); }
-
-        @keyframes rollDice {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .nav-item.dice-rolling i { animation: rollDice 0.6s ease-in-out; color: var(--accent-purple); }
-
-        /* --- Modal 样式 (Lucky & Search) --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(5px);
-            z-index: 200;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-
-        .modal-card {
-            background: var(--card-bg);
-            width: 85%;
-            max-width: 340px;
-            border-radius: 32px;
-            padding: 24px;
-            box-shadow: var(--shadow-modal);
-            transform: translateY(20px) scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            color: var(--text-main);
-        }
-
-        .modal-overlay.active .modal-card { transform: translateY(0) scale(1); }
-
-        .close-modal {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: var(--input-bg);
-            border: none;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            color: var(--text-sub);
-            font-size: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .modal-card .search-input-wrapper {
-            position: relative;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-        .modal-card .search-input-wrapper i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-sub);
-            font-size: 20px;
-        }
-        .modal-card .search-input {
-            width: 100%;
-            padding: 16px 16px 16px 48px;
-            border-radius: 16px;
-            border: 2px solid transparent;
-            background: var(--input-bg);
-            font-size: 16px;
-            color: var(--text-main);
-            outline: none;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-        .modal-card .search-input:focus {
-            border-color: var(--accent-blue);
-            background: var(--card-bg);
-            box-shadow: 0 0 0 4px rgba(91, 149, 245, 0.1);
-        }
-        .tags-container { display: flex; flex-wrap: wrap; gap: 8px; }
-        .search-tag {
-            font-size: 12px;
-            padding: 6px 12px;
-            background: var(--input-bg);
-            color: var(--text-sub);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .search-tag:hover { background: var(--accent-blue); color: white; }
-
-        .lucky-header {
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--accent-purple);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-        .lucky-img-box {
-            height: 140px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 64px;
-            margin-bottom: 20px;
-        }
-        .lucky-btn {
-            background: var(--text-main);
-            color: var(--bg-color);
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
-        }
-        .lucky-btn:active { transform: scale(0.98); }
-
     </style>
 </head>
 <body>
@@ -437,89 +286,104 @@
     </div>
 
     <script type="module">
-        import { fetchSiteConfig, fetchArticleIndex } from "./js/data-loader.js";
+    import { fetchSiteConfig, fetchArticleIndex, searchArticles } from "./js/data-loader.js";
 
-        function getActiveCategory() {
-            const params = new URLSearchParams(window.location.search);
-            return params.get("cat") || "all";
+    let allArticles = []; // 存储当前分类下的所有文章，用于搜索过滤
+    let siteCategories = [];
+
+    function getActiveCategory() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get("cat") || "all";
+    }
+
+    function formatCategoryName(categories, categoryId) {
+        const match = categories.find((cat) => cat.id === categoryId);
+        return match ? match.name : "未分类";
+    }
+
+    // 统一下放渲染函数
+    function renderPosts(list) {
+        const container = document.getElementById("postList");
+        if (!container) return;
+        container.innerHTML = "";
+
+        if (list.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-sub);">没有找到相关内容 👻</div>';
+            return;
         }
 
-        function formatCategoryName(categories, categoryId) {
-            const match = categories.find((cat) => cat.id === categoryId);
-            return match ? match.name : "未分类";
-        }
+        list.forEach((item) => {
+            const card = document.createElement("div");
+            card.className = "compact-card";
+            card.onclick = () => { window.location.href = `article.html?id=${item.id}`; };
 
-        function renderCategories(categories, activeId) {
-            const container = document.getElementById("categoryScroll");
-            if (!container) {
-                return;
-            }
-            container.innerHTML = "";
+            const categoryName = formatCategoryName(siteCategories, item.category);
+            card.innerHTML = `
+                <div class="thumb-box" style="background:${item.bg}; color:${item.color};">
+                    <i class="ph-duotone ${item.icon}"></i>
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">${item.title}</h3>
+                    <div class="card-meta">
+                        <i class="ph-bold ph-tag"></i> ${categoryName} &bull; ${item.date || ""}
+                    </div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
 
-            categories.forEach((cat) => {
+    async function initPosts() {
+        try {
+            const activeCat = getActiveCategory();
+            const [config, index] = await Promise.all([
+                fetchSiteConfig(),
+                fetchArticleIndex()
+            ]);
+
+            siteCategories = config.categories || [];
+            
+            // 1. 渲染分类按钮
+            const catContainer = document.getElementById("categoryScroll");
+            siteCategories.forEach((cat) => {
                 const chip = document.createElement("div");
-                chip.className = "category-chip" + (cat.id === activeId ? " active" : "");
+                chip.className = "category-chip" + (cat.id === activeCat ? " active" : "");
                 chip.textContent = cat.name;
-                chip.addEventListener("click", () => {
-                    window.location.search = `?cat=${cat.id}`;
-                });
-                container.appendChild(chip);
+                chip.onclick = () => { window.location.search = `?cat=${cat.id}`; };
+                catContainer.appendChild(chip);
             });
-        }
 
-        function renderPosts(list, categories) {
-            const container = document.getElementById("postList");
-            if (!container) {
-                return;
-            }
-            container.innerHTML = "";
+            // 2. 筛选并存储初始列表
+            allArticles = activeCat === "all" 
+                ? index 
+                : index.filter(item => item.category === activeCat);
 
-            list.forEach((item) => {
-                const card = document.createElement("div");
-                card.className = "compact-card";
-                card.onclick = () => {
-                    window.location.href = `article.html?id=${item.id}`;
-                };
+            renderPosts(allArticles);
 
-                const categoryName = formatCategoryName(categories, item.category);
-                card.innerHTML = `
-                    <div class="thumb-box" style="background:${item.bg}; color:${item.color};">
-                        <i class="ph-duotone ${item.icon}"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">${item.title}</h3>
-                        <div class="card-meta">
-                            <i class="ph-bold ph-tag"></i> ${categoryName} &bull; ${item.date || ""}
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
+            // 3. 【新增】绑定搜索框逻辑
+            const searchInput = document.querySelector(".search-input");
+            searchInput.addEventListener("input", (e) => {
+                const keyword = e.target.value.trim().toLowerCase();
+                if (!keyword) {
+                    renderPosts(allArticles); // 为空时显示当前分类全部
+                    return;
+                }
+                
+                // 在当前列表内搜索
+                const filtered = allArticles.filter(item => 
+                    item.title.toLowerCase().includes(keyword) || 
+                    item.desc.toLowerCase().includes(keyword)
+                );
+                renderPosts(filtered);
             });
+
+        } catch (error) {
+            console.error("Failed to load posts", error);
         }
+    }
 
-        async function initPosts() {
-            try {
-                const activeCat = getActiveCategory();
-                const [config, index] = await Promise.all([
-                    fetchSiteConfig(),
-                    fetchArticleIndex()
-                ]);
-
-                const categories = config.categories || [];
-                renderCategories(categories, activeCat);
-
-                const filtered = activeCat === "all"
-                    ? index
-                    : index.filter((item) => item.category === activeCat);
-
-                renderPosts(filtered, categories);
-            } catch (error) {
-                console.error("Failed to load posts", error);
-            }
-        }
-
-        initPosts();
-    </script>
+    initPosts();
+</script>
 
     <script src="js/bottom-nav.js"></script>
 </body>
